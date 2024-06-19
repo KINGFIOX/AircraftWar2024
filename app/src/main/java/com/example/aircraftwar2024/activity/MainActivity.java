@@ -1,3 +1,7 @@
+/**
+ * @brief 主界面
+ *  包括：开始游戏 + 声音开关
+ */
 package com.example.aircraftwar2024.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +24,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 初始化ActivityManager并将当前活动添加到管理器中
         activityManager = ActivityManager.getActivityManager();
         activityManager.addActivity(MainActivity.this);
+
+        // 设置当前活动的视图为activity_main布局
         setContentView(R.layout.activity_main);
+
+        // 获取布局中的控件
         RadioButton soundOn = (RadioButton) findViewById(R.id.soundOn);
         Button startButton = (Button) findViewById(R.id.startButton);
+
+        // 为开始按钮设置点击监听器
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -33,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // 为连接按钮设置监听器
+        Button onlineButton  = (Button) findViewById(R.id.onlineButton);
     }
 
     @Override

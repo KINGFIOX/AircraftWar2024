@@ -9,6 +9,7 @@ import java.util.Stack;
 
 public class ActivityManager {
     private static Stack<Activity> activityStack;
+    // 单例模式界面
     private static ActivityManager instance;
 
     public ActivityManager() {

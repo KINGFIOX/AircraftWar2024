@@ -194,4 +194,3 @@ public abstract class AbstractFlyingObject {
     }
 
 }
-
