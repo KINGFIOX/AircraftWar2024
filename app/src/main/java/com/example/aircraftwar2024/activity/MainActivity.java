@@ -4,6 +4,7 @@
  */
 package com.example.aircraftwar2024.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -48,6 +49,24 @@ public class MainActivity extends AppCompatActivity {
 
         // 为连接按钮设置监听器
         Button onlineButton  = (Button) findViewById(R.id.onlineButton);
+        onlineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //显示匹配中
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Matching, please wait...").setCancelable(false);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                //创建子进程
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        alertDialog.dismiss(); // 匹配完成后关闭对话框
+
+                    }
+                }).start();
+            }
+        });
     }
 
     @Override
