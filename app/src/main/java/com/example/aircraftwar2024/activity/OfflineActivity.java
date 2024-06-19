@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.example.aircraftwar2024.R;
 
+// 选择难度阶段
 public class OfflineActivity extends AppCompatActivity {
     boolean soundSwitch;
     private ActivityManager activityManager;
