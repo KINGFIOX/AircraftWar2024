@@ -1,6 +1,6 @@
 /**
  * @brief 主界面
- *  包括：开始游戏 + 声音开关
+ * 包括：开始游戏 + 声音开关
  */
 package com.example.aircraftwar2024.activity;
 
@@ -16,12 +16,19 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.aircraftwar2024.GameWebSocketClient;
 import com.example.aircraftwar2024.R;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityManager activityManager;
     boolean backPressedOnce = false;
+
+    private GameWebSocketClient webSocketClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,23 +55,46 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 为连接按钮设置监听器
-        Button onlineButton  = (Button) findViewById(R.id.onlineButton);
+        Button onlineButton = (Button) findViewById(R.id.onlineButton);
         onlineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //显示匹配中
+                // 显示匹配中
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage("Matching, please wait...").setCancelable(false);
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
-                //创建子进程
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        alertDialog.dismiss(); // 匹配完成后关闭对话框
 
-                    }
-                }).start();
+                try {
+                    webSocketClient = GameWebSocketClient.getInstance("ws://10.249.12.73:9999");
+                    webSocketClient.connect();
+
+                    // 在新线程中等待 "begin" 消息
+                    new Thread(() -> {
+                        try {
+                            webSocketClient.awaitBegin();
+                            // await 结束后，结束
+                            runOnUiThread(() -> {
+                                alertDialog.dismiss();
+                                Toast.makeText(MainActivity.this, "Connected to server and game started", Toast.LENGTH_SHORT).show();
+                            });
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+
+//                /* ---------- 阻塞 ---------- */
+//
+//                // 通知用户连接成功
+//                new Handler(Looper.getMainLooper()).post( () -> {
+//                    alertDialog.dismiss();
+//                    Toast.makeText(MainActivity.this, "Connected to server", Toast.LENGTH_SHORT).show();
+//                } );
+
             }
         });
     }

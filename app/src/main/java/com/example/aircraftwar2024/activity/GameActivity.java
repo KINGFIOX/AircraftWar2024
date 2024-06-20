@@ -20,8 +20,8 @@ import com.example.aircraftwar2024.game.MediumGame;
 public class GameActivity extends AppCompatActivity {
     private static final String TAG = "GameActivity";
 
-    private int gameType=0;
-    public static int screenWidth,screenHeight;
+    private int gameType = 0;
+    public static int screenWidth, screenHeight;
 
     public static Handler mHandler;
 //    private int score;
@@ -42,19 +42,19 @@ public class GameActivity extends AppCompatActivity {
 
         getScreenHW();
 
-        if(getIntent() != null){
-            gameType = getIntent().getIntExtra("gameType",1);
+        if (getIntent() != null) {
+            gameType = getIntent().getIntExtra("gameType", 1);
             soundOn = getIntent().getBooleanExtra("soundOn", false);
             Log.v("GAMEAC", String.valueOf(soundOn));
         }
 
 
         /*TODO:根据用户选择的难度加载相应的游戏界面*/
-        Log.v("GAME","LOADING GAME");
+        Log.v("GAME", "LOADING GAME");
 
         BaseGame baseGameView = getGameByModeID(gameType);
         //baseGameView.setSoundOn(soundOn);
-        Log.v("GAME","HAVE LOADED GAME");
+        Log.v("GAME", "HAVE LOADED GAME");
         setContentView(baseGameView);
 
         mHandler = new Handler(Looper.getMainLooper()) {
@@ -63,7 +63,8 @@ public class GameActivity extends AppCompatActivity {
                 super.handleMessage(msg);
 
 
-                if (msg.what == 1){
+                // FIXME 飞机死亡，发送消息
+                if (msg.what == 1) {
                     int score = baseGameView.getScore();
                     Intent intent = new Intent(GameActivity.this, RankListActivity.class);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -77,15 +78,15 @@ public class GameActivity extends AppCompatActivity {
         };
     }
 
-    public void getScreenHW(){
-        //定义DisplayMetrics 对象
+    public void getScreenHW() {
+        // 定义DisplayMetrics 对象
         DisplayMetrics dm = new DisplayMetrics();
-        //取得窗口属性
+        // 取得窗口属性
         getDisplay().getRealMetrics(dm);
 
-        //窗口的宽度
-        screenWidth= dm.widthPixels;
-        //窗口高度
+        // 窗口的宽度
+        screenWidth = dm.widthPixels;
+        // 窗口高度
         screenHeight = dm.heightPixels;
 
         Log.i(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
@@ -93,14 +94,16 @@ public class GameActivity extends AppCompatActivity {
 
     public BaseGame getGameByModeID(int gameType) {
         switch (gameType) {
-            case 0: return new EasyGame(GameActivity.this);
-            case 1: return new MediumGame(GameActivity.this);
-            case 2: return new HardGame(GameActivity.this);
-            default: return new MediumGame(GameActivity.this);
+            case 0:
+                return new EasyGame(GameActivity.this);
+            case 1:
+                return new MediumGame(GameActivity.this);
+            case 2:
+                return new HardGame(GameActivity.this);
+            default:
+                return new MediumGame(GameActivity.this);
         }
     }
-
-
 
 
     @Override

@@ -473,11 +473,11 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
             mbLoop = false;
             bgmPlayer.shutUp();
             soundPlayer.playGameOver();
+            // FIXME 发送 message，后面会在 GameActivity 转页面用到
             GameActivity.mHandler.sendEmptyMessage(1);
 
             Log.i(TAG, "heroAircraft is not Valid");
         }
-
     }
 
     public void draw() {

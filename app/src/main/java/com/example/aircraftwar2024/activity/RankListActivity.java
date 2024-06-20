@@ -38,12 +38,6 @@ public class RankListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activityManager = ActivityManager.getActivityManager();
         activityManager.addActivity(RankListActivity.this);
-//        dataAccess.clear();
-//        dataAccess.add("Lin", 234, new Date(System.currentTimeMillis()).toString());
-//        dataAccess.add("Lu", 432, new Date(System.currentTimeMillis()).toString());
-//        for (int i = 0; i <= 100; ++i) {
-//            dataAccess.add("Lin1111111111111111111", 1111111111, "0");
-//        }
 
         setContentView(R.layout.activity_record);
         Button mainMenuButton = (Button) findViewById(R.id.main_menu_button);
