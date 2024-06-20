@@ -87,13 +87,6 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-//                /* ---------- 阻塞 ---------- */
-//
-//                // 通知用户连接成功
-//                new Handler(Looper.getMainLooper()).post( () -> {
-//                    alertDialog.dismiss();
-//                    Toast.makeText(MainActivity.this, "Connected to server", Toast.LENGTH_SHORT).show();
-//                } );
 
             }
         });
