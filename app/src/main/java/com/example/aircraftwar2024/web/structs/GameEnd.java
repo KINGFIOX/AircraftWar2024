@@ -1,4 +1,4 @@
-package com.example.aircraftwar2024.web;
+package com.example.aircraftwar2024.web.structs;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,12 +7,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GameEnd {
 
-    GameEnd(int score) {
-        this.score = score;
-    }
-
     final private String message = "end";
     private int score;
+
+    public GameEnd(int score) {
+        this.score = score;
+    }
 
     // getters and setters
     public String getMessage() {
