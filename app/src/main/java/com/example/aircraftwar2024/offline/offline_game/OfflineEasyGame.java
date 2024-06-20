@@ -1,4 +1,4 @@
-package com.example.aircraftwar2024.offline_game;
+package com.example.aircraftwar2024.offline.offline_game;
 
 import android.content.Context;
 
@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class OfflineEasyGame extends com.example.aircraftwar2024.offline_game.OfflineBaseGame {
+public class OfflineEasyGame extends OfflineBaseGame {
 
     public OfflineEasyGame(Context context) {
         super(context);

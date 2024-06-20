@@ -18,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.aircraftwar2024.R;
+import com.example.aircraftwar2024.offline.activity.OfflineActivity;
 import com.example.aircraftwar2024.web.activity.OnlineActivity;
 
 public class MainActivity extends AppCompatActivity {

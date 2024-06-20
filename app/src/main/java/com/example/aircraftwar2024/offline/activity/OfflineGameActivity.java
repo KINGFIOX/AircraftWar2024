@@ -1,4 +1,4 @@
-package com.example.aircraftwar2024.activity;
+package com.example.aircraftwar2024.offline.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +10,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.aircraftwar2024.offline_game.OfflineBaseGame;
-import com.example.aircraftwar2024.offline_game.OfflineEasyGame;
-import com.example.aircraftwar2024.offline_game.OfflineHardGame;
-import com.example.aircraftwar2024.offline_game.OfflineMediumGame;
+import com.example.aircraftwar2024.activity.ActivityManager;
+import com.example.aircraftwar2024.activity.RankListActivity;
+import com.example.aircraftwar2024.offline.offline_game.OfflineBaseGame;
+import com.example.aircraftwar2024.offline.offline_game.OfflineEasyGame;
+import com.example.aircraftwar2024.offline.offline_game.OfflineHardGame;
+import com.example.aircraftwar2024.offline.offline_game.OfflineMediumGame;
 
 
 public class OfflineGameActivity extends AppCompatActivity {

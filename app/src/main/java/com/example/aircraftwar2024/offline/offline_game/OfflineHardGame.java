@@ -1,4 +1,4 @@
-package com.example.aircraftwar2024.offline_game;
+package com.example.aircraftwar2024.offline.offline_game;
 
 import android.content.Context;
 

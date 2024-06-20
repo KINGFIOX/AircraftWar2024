@@ -1,4 +1,4 @@
-package com.example.aircraftwar2024.activity;
+package com.example.aircraftwar2024.offline.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.aircraftwar2024.R;
+import com.example.aircraftwar2024.activity.ActivityManager;
 
 // 选择难度阶段
 public class OfflineActivity extends AppCompatActivity {

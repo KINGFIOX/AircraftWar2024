@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.aircraftwar2024.offline.activity.OfflineActivity;
+import com.example.aircraftwar2024.offline.activity.OfflineGameActivity;
+
 import java.util.Stack;
 
 /**
