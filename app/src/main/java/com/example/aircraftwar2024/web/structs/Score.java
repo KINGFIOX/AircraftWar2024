@@ -8,18 +8,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Score {
 
-    private int message;
+    private int score;
 
     @JsonCreator
-    public Score(@JsonProperty("message") int message) {
-        this.message = message;
+    public Score(@JsonProperty("score") int score) {
+        this.score = score;
     }
 
-    public int getMessage() {
-        return message;
+    public int getScore() {
+        return score;
     }
 
-    public void setMessage(int message) {
-        this.message = message;
+    public void setScore(int score) {
+        this.score = score;
     }
 }

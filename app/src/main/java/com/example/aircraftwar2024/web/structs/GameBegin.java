@@ -6,18 +6,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GameBegin {
-    private String message;
+    private String begin;
 
     @JsonCreator
-    public GameBegin(@JsonProperty("message") String message) {
-        this.message = message;
+    public GameBegin(@JsonProperty("begin") String begin) {
+        this.begin = begin;
     }
 
-    public String getMessage() {
-        return message;
+    public String getBegin() {
+        return begin;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setBegin(String begin) {
+        this.begin = begin;
     }
 }

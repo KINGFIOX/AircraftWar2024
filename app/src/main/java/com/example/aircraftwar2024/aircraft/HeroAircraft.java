@@ -1,12 +1,13 @@
 package com.example.aircraftwar2024.aircraft;
 
 import com.example.aircraftwar2024.ImageManager;
-import com.example.aircraftwar2024.activity.OfflineGameActivity;
+import com.example.aircraftwar2024.activity.MainActivity;
 import com.example.aircraftwar2024.shoot.DirectShoot;
 
 /**
  * 英雄飞机，游戏玩家操控，遵循单例模式（singleton)
  * 【单例模式】
+ *
  * @author hitsz
  */
 public class HeroAircraft extends AbstractAircraft {
@@ -20,14 +21,16 @@ public class HeroAircraft extends AbstractAircraft {
         若发生重排序，假设 A 线程执行了 1 和 3 ，还没有执行 2，B 线程来到判断 NULL，B 线程就会直接返回还没初始化的 instance 了。
         volatile 可以避免重排序。
     */
-    /** 英雄机对象单例 */
+    /**
+     * 英雄机对象单例
+     */
     private volatile static HeroAircraft heroAircraft;
 
     /**
      * 单例模式：私有化构造方法
      */
     private HeroAircraft() {
-        super(OfflineGameActivity.screenWidth / 2, OfflineGameActivity.screenHeight - ImageManager.HERO_IMAGE.getHeight(),
+        super(MainActivity.screenWidth / 2, MainActivity.screenHeight - ImageManager.HERO_IMAGE.getHeight(),
                 0, 0, 1000);
         this.shootNum = 1;
         this.power = 30;
@@ -40,9 +43,10 @@ public class HeroAircraft extends AbstractAircraft {
     /**
      * 通过单例模式获得初始化英雄机
      * 【单例模式：双重校验锁方法】
+     *
      * @return 英雄机单例
      */
-    public static HeroAircraft getHeroAircraft(){
+    public static HeroAircraft getHeroAircraft() {
         if (heroAircraft == null) {
             synchronized (HeroAircraft.class) {
                 if (heroAircraft == null) {
@@ -57,10 +61,11 @@ public class HeroAircraft extends AbstractAircraft {
     public void forward() {
         // 英雄机由鼠标控制，不通过forward函数移动
     }
+
     @Override
     public void vanish() {
         super.vanish();
-        heroAircraft= null;
+        heroAircraft = null;
     }
 
     @Override

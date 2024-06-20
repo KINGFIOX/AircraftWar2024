@@ -3,6 +3,7 @@ package com.example.aircraftwar2024.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.util.Stack;
@@ -11,6 +12,9 @@ import java.util.Stack;
  * @brief 饿汉模式
  */
 public class ActivityManager {
+
+    public final static String TAG = "ActivityManager";
+
     private static Stack<Activity> activityStack = new Stack<Activity>();
 
     // 单例模式界面
@@ -102,4 +106,5 @@ public class ActivityManager {
         } catch (Exception ex) {
         }
     }
+
 }

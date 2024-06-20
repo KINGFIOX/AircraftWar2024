@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -22,10 +24,15 @@ import java.net.URISyntaxException;
 
 public class MainActivity extends AppCompatActivity {
 
+    static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityManager.getActivityManager().addActivity(MainActivity.this);
+
+        // 初始化
+        getScreenHW();
 
         // 设置当前 activity 的 布局
         setContentView(R.layout.activity_main);
@@ -58,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* ---------- 按下 back ---------- */
     boolean backPressedOnce = false;
+
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {
@@ -68,5 +76,22 @@ public class MainActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             backPressedOnce = false;
         }, 2000);
+    }
+
+    /* ---------- 设置 width 和 height ---------- */
+    public static int screenWidth, screenHeight;
+
+    public void getScreenHW() {
+        // 定义DisplayMetrics 对象
+        DisplayMetrics dm = new DisplayMetrics();
+        // 取得窗口属性
+        getDisplay().getRealMetrics(dm);
+
+        // 窗口的宽度
+        screenWidth = dm.widthPixels;
+        // 窗口高度
+        screenHeight = dm.heightPixels;
+
+        Log.i(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
     }
 }

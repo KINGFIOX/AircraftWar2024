@@ -3,7 +3,7 @@ package com.example.aircraftwar2024.basic;
 import android.graphics.Bitmap;
 
 import com.example.aircraftwar2024.ImageManager;
-import com.example.aircraftwar2024.activity.OfflineGameActivity;
+import com.example.aircraftwar2024.activity.MainActivity;
 import com.example.aircraftwar2024.aircraft.AbstractAircraft;
 
 /**
@@ -75,7 +75,7 @@ public abstract class AbstractFlyingObject {
     public void forward() {
         locationX += speedX;
         locationY += speedY;
-        if (locationX <= 0 || locationX >= OfflineGameActivity.screenWidth) {
+        if (locationX <= 0 || locationX >= MainActivity.screenWidth) {
             // 横向超出边界后反向
             speedX = -speedX;
         }

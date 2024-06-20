@@ -2,7 +2,7 @@ package com.example.aircraftwar2024.factory.enemy_factory;
 
 
 import com.example.aircraftwar2024.ImageManager;
-import com.example.aircraftwar2024.activity.OfflineGameActivity;
+import com.example.aircraftwar2024.activity.MainActivity;
 import com.example.aircraftwar2024.aircraft.AbstractEnemyAircraft;
 import com.example.aircraftwar2024.aircraft.BossEnemy;
 import com.example.aircraftwar2024.shoot.DisperseShoot;
@@ -18,7 +18,7 @@ public class BossFactory implements EnemyFactory {
     @Override
     public AbstractEnemyAircraft createEnemyAircraft(double bosslevel) {
         BossEnemy boss = new BossEnemy(
-                (OfflineGameActivity.screenWidth - ImageManager.BOSS_ENEMY_IMAGE.getWidth()) / 2,
+                (MainActivity.screenWidth - ImageManager.BOSS_ENEMY_IMAGE.getWidth()) / 2,
                 (ImageManager.BOSS_ENEMY_IMAGE.getHeight())/2,
                 5,
                 0,

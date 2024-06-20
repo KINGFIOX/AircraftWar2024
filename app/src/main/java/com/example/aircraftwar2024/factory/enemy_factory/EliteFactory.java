@@ -2,7 +2,7 @@ package com.example.aircraftwar2024.factory.enemy_factory;
 
 
 import com.example.aircraftwar2024.ImageManager;
-import com.example.aircraftwar2024.activity.OfflineGameActivity;
+import com.example.aircraftwar2024.activity.MainActivity;
 import com.example.aircraftwar2024.aircraft.AbstractEnemyAircraft;
 import com.example.aircraftwar2024.aircraft.EliteEnemy;
 import com.example.aircraftwar2024.shoot.DirectShoot;
@@ -15,9 +15,9 @@ public class EliteFactory implements EnemyFactory {
     @Override
     public AbstractEnemyAircraft createEnemyAircraft(double level) {
         EliteEnemy elite = new EliteEnemy(
-                (int) ( Math.random() * (OfflineGameActivity.screenWidth - ImageManager.ELITE_ENEMY_IMAGE.getWidth())),
-                (int) (Math.random() * OfflineGameActivity.screenHeight * 0.05),
-                (int) ((Math.random()-0.5)*20),
+                (int) (Math.random() * (MainActivity.screenWidth - ImageManager.ELITE_ENEMY_IMAGE.getWidth())),
+                (int) (Math.random() * MainActivity.screenHeight * 0.05),
+                (int) ((Math.random() - 0.5) * 20),
                 (int) (this.speedY * level),
                 (int) (this.eliteHp * level));
         elite.setShootStrategy(new DirectShoot());

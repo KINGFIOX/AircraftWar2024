@@ -18,9 +18,9 @@ import com.example.aircraftwar2024.offline_game.OfflineMediumGame;
 
 
 public class OfflineGameActivity extends AppCompatActivity {
-    private static final String TAG = "GameActivity";
+    private static final String TAG = "OfflineGameActivity";
 
-    private int gameType = 0;
+    protected int gameType = 0;
 
     public static Handler mHandler;
 //    private int score;
@@ -32,8 +32,6 @@ public class OfflineGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityManager.getActivityManager().addActivity(OfflineGameActivity.this);
-
-        getScreenHW();
 
         if (getIntent() != null) {
             gameType = getIntent().getIntExtra("gameType", 1);
@@ -69,22 +67,6 @@ public class OfflineGameActivity extends AppCompatActivity {
 
             }
         };
-    }
-
-    /* ---------- 设置 width 和 height ---------- */
-    public static int screenWidth, screenHeight;
-    public void getScreenHW() {
-        // 定义DisplayMetrics 对象
-        DisplayMetrics dm = new DisplayMetrics();
-        // 取得窗口属性
-        getDisplay().getRealMetrics(dm);
-
-        // 窗口的宽度
-        screenWidth = dm.widthPixels;
-        // 窗口高度
-        screenHeight = dm.heightPixels;
-
-        Log.i(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
     }
 
     /* ---------- 设置 Game Mode ---------- */

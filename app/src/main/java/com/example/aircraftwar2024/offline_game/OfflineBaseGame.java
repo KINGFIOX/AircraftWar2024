@@ -12,6 +12,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import androidx.annotation.NonNull;
 import com.example.aircraftwar2024.ImageManager;
+import com.example.aircraftwar2024.activity.MainActivity;
 import com.example.aircraftwar2024.activity.OfflineGameActivity;
 import com.example.aircraftwar2024.aircraft.AbstractAircraft;
 import com.example.aircraftwar2024.aircraft.AbstractEnemyAircraft;
@@ -340,7 +341,7 @@ public abstract class OfflineBaseGame extends SurfaceView implements SurfaceHold
                 clickY = motionEvent.getY();
                 heroAircraft.setLocation(clickX, clickY);
 
-                if ( clickX<0 || clickX> OfflineGameActivity.screenWidth || clickY<0 || clickY> OfflineGameActivity.screenHeight){
+                if ( clickX<0 || clickX> MainActivity.screenWidth || clickY<0 || clickY> MainActivity.screenHeight){
                     // 防止超出边界
                     return false;
                 }
@@ -491,7 +492,7 @@ public abstract class OfflineBaseGame extends SurfaceView implements SurfaceHold
             canvas.drawBitmap(backGround, 0, this.backGroundTop - backGround.getHeight(), mPaint);
             canvas.drawBitmap(backGround, 0, this.backGroundTop, mPaint);
             backGroundTop += 1;
-            if (backGroundTop == OfflineGameActivity.screenHeight)
+            if (backGroundTop == MainActivity.screenHeight)
                 this.backGroundTop = 0;
 
             //先绘制子弹，后绘制飞机
@@ -559,8 +560,8 @@ public abstract class OfflineBaseGame extends SurfaceView implements SurfaceHold
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        OfflineGameActivity.screenWidth = i1;
-        OfflineGameActivity.screenHeight = i2;
+        MainActivity.screenWidth = i1;
+        MainActivity.screenHeight = i2;
     }
 
     @Override

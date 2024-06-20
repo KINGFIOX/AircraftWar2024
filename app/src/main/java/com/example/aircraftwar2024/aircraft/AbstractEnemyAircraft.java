@@ -2,7 +2,7 @@ package com.example.aircraftwar2024.aircraft;
 
 
 
-import com.example.aircraftwar2024.activity.OfflineGameActivity;
+import com.example.aircraftwar2024.activity.MainActivity;
 import com.example.aircraftwar2024.supply.AbstractFlyingSupply;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public abstract class AbstractEnemyAircraft extends AbstractAircraft {
     public void forward() {
         super.forward();
         // 判定 y 轴向下飞行出界
-        if (locationY >= OfflineGameActivity.screenHeight) {
+        if (locationY >= MainActivity.screenHeight) {
             vanish();
         }
     }

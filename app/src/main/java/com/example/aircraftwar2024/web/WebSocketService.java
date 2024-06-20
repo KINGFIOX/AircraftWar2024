@@ -49,21 +49,19 @@ public class WebSocketService {
             public void onMessage(String message) {
                 try {
                     JsonNode jsonNode = objectMapper.readTree(message);
-                    if (jsonNode.has("message")) {
-                        String msgType = jsonNode.get("message").asText();
-                        if ("begin".equals(msgType)) {
-                            GameBegin gameBegin = objectMapper.treeToValue(jsonNode, GameBegin.class);
-                            gameBeginQueue.put(gameBegin);
-                            Log.d(TAG, "Received GameBegin message: " + gameBegin.getMessage());
-                        } else if ("end".equals(msgType)) {
-                            GameEnd gameEnd = objectMapper.treeToValue(jsonNode, GameEnd.class);
-                            gameEndQueue.put(gameEnd);
-                            Log.d(TAG, "Received GameEnd message: " + gameEnd.getScore());
-                        }
+
+                    if (jsonNode.has("begin")) {
+                        GameBegin gameBegin = objectMapper.treeToValue(jsonNode, GameBegin.class);
+                        gameBeginQueue.put(gameBegin);
+                        Log.d(TAG, "Received GameBegin message: " + gameBegin.getBegin());
+                    } else if (jsonNode.has("end")) {
+                        GameEnd gameEnd = objectMapper.treeToValue(jsonNode, GameEnd.class);
+                        gameEndQueue.put(gameEnd);
+                        Log.d(TAG, "Received GameEnd message: " + gameEnd.getScore());
                     } else if (jsonNode.has("score")) {
                         Score score = objectMapper.treeToValue(jsonNode, Score.class);
                         scoreQueue.put(score);
-                        Log.d(TAG, "Received Score message: " + score.getMessage());
+                        Log.d(TAG, "Received Score message: " + score.getScore());
                     } else {
                         Log.d(TAG, "Unknown message type received: " + message);
                     }
@@ -71,6 +69,7 @@ public class WebSocketService {
                     e.printStackTrace();
                 }
             }
+
 
             @Override
             public void onClose(int code, String reason, boolean remote) {

@@ -1,7 +1,7 @@
 package com.example.aircraftwar2024.bullet;
 
 
-import com.example.aircraftwar2024.activity.OfflineGameActivity;
+import com.example.aircraftwar2024.activity.MainActivity;
 import com.example.aircraftwar2024.basic.AbstractFlyingObject;
 import com.example.aircraftwar2024.supply.notifier.IBombObserver;
 
@@ -27,12 +27,12 @@ public abstract class AbstractBullet extends AbstractFlyingObject implements IBo
         super.forward();
 
         // 判定 x 轴出界
-        if (locationX <= 0 || locationX >= OfflineGameActivity.screenWidth) {
+        if (locationX <= 0 || locationX >= MainActivity.screenWidth) {
             vanish();
         }
 
         // 判定 y 轴出界
-        if (speedY > 0 && locationY >= OfflineGameActivity.screenHeight ) {
+        if (speedY > 0 && locationY >= MainActivity.screenHeight ) {
             // 向下飞行出界
             vanish();
         }else if (locationY <= 0){

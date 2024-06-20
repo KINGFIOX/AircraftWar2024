@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GameEnd {
-    private final String message = "end";
+    private final String end = "end";
     private int score;
 
     @JsonCreator
@@ -14,8 +14,8 @@ public class GameEnd {
         this.score = score;
     }
 
-    public String getMessage() {
-        return message;
+    public String getEnd() {
+        return end;
     }
 
     public int getScore() {
