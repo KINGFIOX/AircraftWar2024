@@ -65,6 +65,9 @@ public class OnlineGameActivity extends AppCompatActivity {
 
                 // FIXME 飞机死亡，发送消息
                 if (msg.what == 1) {
+
+                    // TODO 发送消息
+
                     int score = onlineGameView.getScore();
                     Intent intent = new Intent(OnlineGameActivity.this, RankListActivity.class);
 

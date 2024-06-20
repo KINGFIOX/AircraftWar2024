@@ -16,10 +16,9 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.example.aircraftwar2024.GameWebSocketClient;
+import com.example.aircraftwar2024.web.GameWebSocketClient;
 import com.example.aircraftwar2024.R;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 public class MainActivity extends AppCompatActivity {
