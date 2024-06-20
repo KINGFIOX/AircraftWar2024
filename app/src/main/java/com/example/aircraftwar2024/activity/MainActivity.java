@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /* ---------- 按下 back ---------- */
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {

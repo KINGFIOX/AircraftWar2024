@@ -8,39 +8,46 @@ import android.util.Log;
 import java.util.Stack;
 
 public class ActivityManager {
-    private static Stack<Activity> activityStack;
+    private static Stack<Activity> activityStack = new Stack<Activity>();
+
     // 单例模式界面
-    private static ActivityManager instance;
+    private static ActivityManager m_instance = new ActivityManager();
 
-    public ActivityManager() {
+    private ActivityManager() {
     }
 
-    public static ActivityManager getActivityManager(){
-        if(instance == null){
-            instance = new ActivityManager();
-        }
-        return instance;
+    public static ActivityManager getActivityManager() {
+        return m_instance;
     }
 
-    public void addActivity(Activity activity){
-        if(activityStack == null){
-            activityStack = new Stack<Activity>();
-        }
+    /**
+     * @brief 栈顶是当前的 activity
+     */
+    public void addActivity(Activity activity) {
         activityStack.add(activity);
         Log.v("info", "ActivityManager stack size:" + activityStack.size());
     }
 
-    public Activity currentActivity(){
+    /**
+     * @brief 栈顶是当前的 activity
+     */
+    public Activity currentActivity() {
         Activity activity = activityStack.lastElement();
         return activity;
     }
 
-    public void finishActivity(){
+    /**
+     * @brief 弹出栈顶的 activity
+     */
+    public void finishActivity() {
         Activity activity = activityStack.lastElement();
         finishActivity(activity);
     }
 
 
+    /**
+     * @brief 关掉 activity
+     */
     public void finishActivity(Activity activity) {
         if (activity != null) {
             activityStack.remove(activity);
@@ -49,35 +56,47 @@ public class ActivityManager {
         }
     }
 
-    public void finishActivity(Class<?> cls){
-        for(Activity activity : activityStack){
-            if(activity.getClass().equals(cls)){
+    /**
+     * @brief 关掉 activity，接受 class 名字
+     */
+    public void finishActivity(Class<?> cls) {
+        for (Activity activity : activityStack) {
+            if (activity.getClass().equals(cls)) {
                 finishActivity(activity);
             }
         }
     }
 
-    public void finishAllActivity(){
-        for(int i = 0,size = activityStack.size();i<size;i++){
-            if(activityStack.get(i) != null){
-                activityStack.get(i).finish();;
+    /**
+     * @brief 关掉所有的 activity, 在 exit 中调用
+     */
+    public void finishAllActivity() {
+        for (int i = 0, size = activityStack.size(); i < size; i++) {
+            if (activityStack.get(i) != null) {
+                activityStack.get(i).finish();
             }
         }
         activityStack.clear();
     }
 
+    /**
+     * @brief activity 是一个 stack ，这里连续弹出多个 activity
+     */
     public void back2Title() {
         finishActivity(RankListActivity.class);
         finishActivity(GameActivity.class);
         finishActivity(OfflineActivity.class);
-
     }
-    public void exitApp (Context context){
-        try{
+
+    /**
+     * @brief 按下两次 back 以后就会调用这个
+     */
+    public void exitApp(Context context) {
+        try {
             finishAllActivity();
             System.exit(0);
             android.os.Process.killProcess(android.os.Process.myPid());
-        }catch(Exception ex){
+        } catch (Exception ex) {
         }
     }
 }

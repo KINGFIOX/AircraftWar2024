@@ -498,6 +498,7 @@ public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, R
             bgmPlayer.toNormalBgm();
         }
 
+        // NOTICE 游戏结束
         if (heroAircraft.notValid()) {
             gameOverFlag = true;
             mbLoop = false;

@@ -1,5 +1,6 @@
 package com.example.aircraftwar2024.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aircraftwar2024.game.BaseGame;
@@ -16,6 +18,10 @@ import com.example.aircraftwar2024.game.EasyGame;
 import com.example.aircraftwar2024.game.HardGame;
 import com.example.aircraftwar2024.game.MediumGame;
 import com.example.aircraftwar2024.game.OnlineGame;
+import com.example.aircraftwar2024.web.GameWebSocketClient;
+import com.example.aircraftwar2024.web.Score;
+
+import java.net.URISyntaxException;
 
 public class OnlineGameActivity extends AppCompatActivity {
     private static final String TAG = "OnlineGameActivity";
@@ -35,6 +41,7 @@ public class OnlineGameActivity extends AppCompatActivity {
     // public MyMediaPlayer myMediaPlayer = new
     // MyMediaPlayer(GameActivity.this,true);
 
+    /* ---------- 获取屏幕 higth 和 width ---------- */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +61,6 @@ public class OnlineGameActivity extends AppCompatActivity {
 
         // BaseGame baseGameView = getGameByModeID(gameType);
         OnlineGame onlineGameView = new OnlineGame(OnlineGameActivity.this);
-        // baseGameView.setSoundOn(soundOn);
-//        Log.v("GAME", "HAVE LOADED GAME");
         setContentView(onlineGameView);
 
         mHandler = new Handler(Looper.getMainLooper()) {
@@ -63,27 +68,44 @@ public class OnlineGameActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
 
-                // FIXME 飞机死亡，发送消息
+                AlertDialog.Builder builder = new AlertDialog.Builder(OnlineGameActivity.this);
+                builder.setMessage("Matching, please wait...").setCancelable(false);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
                 if (msg.what == 1) {
 
-                    // TODO 发送消息
-
                     int score = onlineGameView.getScore();
-                    Intent intent = new Intent(OnlineGameActivity.this, RankListActivity.class);
 
-                    // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                    // Intent.FLAG_ACTIVITY_NEW_TASK);
-                    // 我们默认是 中等模式
-                    intent.putExtra("gameType", 1);
-                    intent.putExtra("score", score);
-                    // setContentView(R.layout.activity_record);
-                    startActivity(intent);  //
+                    // TODO 发送消息
+                    try {
+                        GameWebSocketClient webSocketClient = GameWebSocketClient.getInstance("ws://10.249.12.73:9999");
+                        Log.i(TAG, "before socket send");
+                        webSocketClient.sendEnd(score);
+
+                        try {
+                            webSocketClient.awaitEnd(); // 阻塞
+                            // await 结束后，结束
+                            runOnUiThread(() -> {
+                                Intent intent = new Intent(OnlineGameActivity.this, RankListActivity.class);
+//                                // 我们默认是 中等模式
+//                                intent.putExtra("gameType", 1);
+//                                intent.putExtra("score", score);
+                                startActivity(intent);  //
+                            });
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
         };
     }
 
+    /* ---------- 获取屏幕 higth 和 width ---------- */
     public void getScreenHW() {
         // 定义DisplayMetrics 对象
         DisplayMetrics dm = new DisplayMetrics();
@@ -98,6 +120,7 @@ public class OnlineGameActivity extends AppCompatActivity {
         Log.i(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
     }
 
+    /* ---------- 按下 back ---------- */
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {
@@ -109,5 +132,4 @@ public class OnlineGameActivity extends AppCompatActivity {
             backPressedOnce = false;
         }, 2000);
     }
-
 }

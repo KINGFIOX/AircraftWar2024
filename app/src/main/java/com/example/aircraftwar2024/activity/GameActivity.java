@@ -15,6 +15,7 @@ import com.example.aircraftwar2024.game.BaseGame;
 import com.example.aircraftwar2024.game.EasyGame;
 import com.example.aircraftwar2024.game.HardGame;
 import com.example.aircraftwar2024.game.MediumGame;
+import com.example.aircraftwar2024.web.GameWebSocketClient;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -32,12 +33,11 @@ public class GameActivity extends AppCompatActivity {
 
     private ActivityManager activityManager;
 
-    //public MyMediaPlayer myMediaPlayer = new MyMediaPlayer(GameActivity.this,true);
-
+    /* ---------- 设置 width 和 height ---------- */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityManager = ActivityManager.getActivityManager();
+        activityManager = ActivityManager.getActivityManager();  //
         activityManager.addActivity(GameActivity.this);
 
         getScreenHW();
@@ -66,6 +66,7 @@ public class GameActivity extends AppCompatActivity {
                 // FIXME 飞机死亡，发送消息
                 if (msg.what == 1) {
                     int score = baseGameView.getScore();
+
                     Intent intent = new Intent(GameActivity.this, RankListActivity.class);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("gameType", gameType);
@@ -78,6 +79,7 @@ public class GameActivity extends AppCompatActivity {
         };
     }
 
+    /* ---------- 设置 width 和 height ---------- */
     public void getScreenHW() {
         // 定义DisplayMetrics 对象
         DisplayMetrics dm = new DisplayMetrics();
@@ -92,6 +94,7 @@ public class GameActivity extends AppCompatActivity {
         Log.i(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
     }
 
+    /* ---------- 设置 Game Mode ---------- */
     public BaseGame getGameByModeID(int gameType) {
         switch (gameType) {
             case 0:
@@ -106,6 +109,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
+    /* ---------- 按下 back ---------- */
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {
