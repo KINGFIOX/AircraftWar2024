@@ -41,7 +41,7 @@ public class OfflineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.getActivityManager().addActivity(OfflineActivity.this);
+        ActivityManager.getInstance().addActivity(OfflineActivity.this);
         setContentView(R.layout.activity_offline);
 
         this.soundSwitch = getIntent().getBooleanExtra("soundSwitch", false);
@@ -59,7 +59,7 @@ public class OfflineActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        ActivityManager.getActivityManager().finishActivity();
+        ActivityManager.getInstance().popActivity();
 //        super.onBackPressed();
     }
 }

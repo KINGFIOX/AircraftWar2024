@@ -30,13 +30,12 @@ public class RankListActivity extends AppCompatActivity {
 
     boolean backPressedOnce = false;
 
-//    private List<Map<String, Object>> data;
+    //    private List<Map<String, Object>> data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
-        activityManager = ActivityManager.getActivityManager();
+        activityManager = ActivityManager.getInstance();
         activityManager.addActivity(RankListActivity.this);
 
         setContentView(R.layout.activity_record);
@@ -51,7 +50,7 @@ public class RankListActivity extends AppCompatActivity {
         TextView titleView = (TextView) findViewById(R.id.rank_title);
         titleView.setText(getTitleByGameType(gameType));
 
-        ListView listView =(ListView) findViewById(R.id.rank_list);
+        ListView listView = (ListView) findViewById(R.id.rank_list);
 
 //        data = getData();
 
@@ -82,7 +81,7 @@ public class RankListActivity extends AppCompatActivity {
                                 simpleAdapter.notifyDataSetChanged();
                             }
                         })
-                        .setNegativeButton("NO",null)
+                        .setNegativeButton("NO", null)
                         .show();
 
 
@@ -125,12 +124,17 @@ public class RankListActivity extends AppCompatActivity {
 
     private static String getTitleByGameType(int gameType) {
         switch (gameType) {
-            case 0: return "EASY MODE";
-            case 1: return "NORMAL MODE";
-            case 2: return "HARD MODE";
-            default: return "NORMAL MODE";
+            case 0:
+                return "EASY MODE";
+            case 1:
+                return "NORMAL MODE";
+            case 2:
+                return "HARD MODE";
+            default:
+                return "NORMAL MODE";
         }
     }
+
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {

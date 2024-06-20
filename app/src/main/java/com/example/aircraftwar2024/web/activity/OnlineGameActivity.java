@@ -1,4 +1,4 @@
-package com.example.aircraftwar2024.activity;
+package com.example.aircraftwar2024.web.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.aircraftwar2024.activity.ActivityManager;
+import com.example.aircraftwar2024.activity.RankListActivity;
+import com.example.aircraftwar2024.web.WebSocketService;
 import com.example.aircraftwar2024.web.online_game.OnlineBaseGame;
 import com.example.aircraftwar2024.web.online_game.OnlineEasyGame;
 import com.example.aircraftwar2024.web.online_game.OnlineHardGame;
@@ -30,7 +33,7 @@ public class OnlineGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.getActivityManager().addActivity(OnlineGameActivity.this);
+        ActivityManager.getInstance().addActivity(OnlineGameActivity.this);
 
         getScreenHW();
 
@@ -59,7 +62,16 @@ public class OnlineGameActivity extends AppCompatActivity {
                 if (msg.what == 1) {
                     int score = baseGameView.getScore();
 
-                    Intent intent = new Intent(OnlineGameActivity.this, RankListActivity.class);
+                    // 发送结束通知，并且发送 score
+                    try {
+                        WebSocketService.getInstance().sendGameEnd(score);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    // 切换到 Online end wait 页面
+                    Intent intent = new Intent(OnlineGameActivity.this, OnlineEndActivity.class);
+
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("gameType", gameType);
                     intent.putExtra("score", score);
@@ -107,7 +119,7 @@ public class OnlineGameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {
-            ActivityManager.getActivityManager().exitApp(OnlineGameActivity.this);
+            ActivityManager.getInstance().exitApp(OnlineGameActivity.this);
         }
         backPressedOnce = true;
         Toast.makeText(OnlineGameActivity.this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();

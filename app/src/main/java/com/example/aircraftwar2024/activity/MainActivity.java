@@ -4,7 +4,6 @@
  */
 package com.example.aircraftwar2024.activity;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,8 +18,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.aircraftwar2024.R;
-
-import java.net.URISyntaxException;
+import com.example.aircraftwar2024.web.activity.OnlineActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.getActivityManager().addActivity(MainActivity.this);
+        ActivityManager.getInstance().addActivity(MainActivity.this);
 
         // 初始化
         getScreenHW();
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {
-            ActivityManager.getActivityManager().exitApp(MainActivity.this);
+            ActivityManager.getInstance().exitApp(MainActivity.this);
         }
         backPressedOnce = true;
         Toast.makeText(MainActivity.this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();

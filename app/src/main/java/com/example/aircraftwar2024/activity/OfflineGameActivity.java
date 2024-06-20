@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,7 +30,7 @@ public class OfflineGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.getActivityManager().addActivity(OfflineGameActivity.this);
+        ActivityManager.getInstance().addActivity(OfflineGameActivity.this);
 
         if (getIntent() != null) {
             gameType = getIntent().getIntExtra("gameType", 1);
@@ -89,7 +88,7 @@ public class OfflineGameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {
-            ActivityManager.getActivityManager().exitApp(OfflineGameActivity.this);
+            ActivityManager.getInstance().exitApp(OfflineGameActivity.this);
         }
         backPressedOnce = true;
         Toast.makeText(OfflineGameActivity.this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();

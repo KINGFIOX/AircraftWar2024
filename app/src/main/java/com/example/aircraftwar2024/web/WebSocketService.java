@@ -121,6 +121,10 @@ public class WebSocketService {
         sendMessage(gameBegin);
     }
 
+    public void sendGameEnd(int score) throws Exception {
+        sendMessage(new GameEnd(score));
+    }
+
     public void sendGameEnd(GameEnd gameEnd) throws Exception {
         sendMessage(gameEnd);
     }

@@ -3,7 +3,6 @@ package com.example.aircraftwar2024.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.util.Stack;
@@ -23,7 +22,7 @@ public class ActivityManager {
     private ActivityManager() {
     }
 
-    public static ActivityManager getActivityManager() {
+    public static ActivityManager getInstance() {
         return m_instance;
     }
 
@@ -46,16 +45,16 @@ public class ActivityManager {
     /**
      * @brief 弹出栈顶的 activity
      */
-    public void finishActivity() {
+    public void popActivity() {
         Activity activity = activityStack.lastElement();
-        finishActivity(activity);
+        delActivity(activity);
     }
 
 
     /**
      * @brief 关掉 activity
      */
-    public void finishActivity(Activity activity) {
+    public void delActivity(Activity activity) {
         if (activity != null) {
             activityStack.remove(activity);
             activity.finish();
@@ -66,10 +65,10 @@ public class ActivityManager {
     /**
      * @brief 关掉 activity，接受 class 名字
      */
-    public void finishActivity(Class<?> cls) {
+    public void popAllActivity(Class<?> cls) {
         for (Activity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
-                finishActivity(activity);
+                delActivity(activity);
             }
         }
     }
@@ -90,9 +89,9 @@ public class ActivityManager {
      * @brief activity 是一个 stack ，这里连续弹出多个 activity
      */
     public void back2Title() {
-        finishActivity(RankListActivity.class);
-        finishActivity(OfflineGameActivity.class);
-        finishActivity(OfflineActivity.class);
+        popAllActivity(RankListActivity.class);
+        popAllActivity(OfflineGameActivity.class);
+        popAllActivity(OfflineActivity.class);
     }
 
     /**

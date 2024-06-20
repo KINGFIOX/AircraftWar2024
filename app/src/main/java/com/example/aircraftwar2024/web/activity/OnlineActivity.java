@@ -1,4 +1,4 @@
-package com.example.aircraftwar2024.activity;
+package com.example.aircraftwar2024.web.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aircraftwar2024.R;
+import com.example.aircraftwar2024.activity.ActivityManager;
 import com.example.aircraftwar2024.web.WebSocketService;
 import com.example.aircraftwar2024.web.structs.GameBegin;
 
@@ -79,7 +80,7 @@ public class OnlineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.getActivityManager().addActivity(OnlineActivity.this);
+        ActivityManager.getInstance().addActivity(OnlineActivity.this);
         setContentView(R.layout.activity_online);
         Button easyModeButton = (Button) findViewById(R.id.easyModeButton);
         Button normalModeButton = (Button) findViewById(R.id.normalModeButton);
@@ -92,6 +93,6 @@ public class OnlineActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        ActivityManager.getActivityManager().finishActivity();
+        ActivityManager.getInstance().popActivity();
     }
 }

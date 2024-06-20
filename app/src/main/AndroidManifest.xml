@@ -19,13 +19,13 @@
             android:name=".activity.OfflineActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.OnlineActivity"
+            android:name=".web.activity.OnlineActivity"
             android:exported="false" />
         <activity
             android:name=".activity.OfflineGameActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.OnlineGameActivity"
+            android:name=".web.activity.OnlineGameActivity"
             android:exported="false" />
         <activity
             android:name=".activity.RankListActivity"

@@ -12,7 +12,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import androidx.annotation.NonNull;
 import com.example.aircraftwar2024.ImageManager;
-import com.example.aircraftwar2024.activity.OnlineGameActivity;
+import com.example.aircraftwar2024.web.activity.OnlineGameActivity;
 import com.example.aircraftwar2024.aircraft.AbstractAircraft;
 import com.example.aircraftwar2024.aircraft.AbstractEnemyAircraft;
 import com.example.aircraftwar2024.aircraft.BossEnemy;
@@ -481,6 +481,7 @@ public abstract class OnlineBaseGame extends SurfaceView implements SurfaceHolde
             mbLoop = false;
             bgmPlayer.shutUp();
             soundPlayer.playGameOver();
+
             // FIXME 发送 message，后面会在 GameActivity 转页面用到
             OnlineGameActivity.mHandler.sendEmptyMessage(1);
 
