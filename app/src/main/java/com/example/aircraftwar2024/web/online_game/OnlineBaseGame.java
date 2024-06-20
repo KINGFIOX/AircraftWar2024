@@ -12,7 +12,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import androidx.annotation.NonNull;
 import com.example.aircraftwar2024.ImageManager;
-import com.example.aircraftwar2024.activity.OfflineGameActivity;
+import com.example.aircraftwar2024.activity.OnlineGameActivity;
 import com.example.aircraftwar2024.aircraft.AbstractAircraft;
 import com.example.aircraftwar2024.aircraft.AbstractEnemyAircraft;
 import com.example.aircraftwar2024.aircraft.BossEnemy;
@@ -30,6 +30,7 @@ import com.example.aircraftwar2024.supply.AbstractFlyingSupply;
 import com.example.aircraftwar2024.supply.BombSupply;
 
 import com.example.aircraftwar2024.supply.notifier.BombNotifier;
+import com.example.aircraftwar2024.web.WebSocketService;
 
 
 import java.util.LinkedList;
@@ -153,8 +154,8 @@ public abstract class OnlineBaseGame extends SurfaceView implements SurfaceHolde
 
 
 
-        bgmPlayer = new BgmPlayer(context, OfflineGameActivity.soundOn);
-        soundPlayer = new SoundPlayer(context, OfflineGameActivity.soundOn);
+        bgmPlayer = new BgmPlayer(context, OnlineGameActivity.soundOn);
+        soundPlayer = new SoundPlayer(context, OnlineGameActivity.soundOn);
 
 //        mbLoop = true;
         mPaint = new Paint();  //设置画笔
@@ -226,6 +227,7 @@ public abstract class OnlineBaseGame extends SurfaceView implements SurfaceHolde
 
             // 子弹移动
             bulletsMoveAction();
+
             // 飞机移动
             aircraftsMoveAction();
 
@@ -233,9 +235,15 @@ public abstract class OnlineBaseGame extends SurfaceView implements SurfaceHolde
 
             score += bombNotifierFlushAction();
 
+            // TODO 发送当前分数
+            try {
+                WebSocketService.getInstance().sendScore(score);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
             // 撞击检测
             try {
-
                 crashCheckAction();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -340,7 +348,7 @@ public abstract class OnlineBaseGame extends SurfaceView implements SurfaceHolde
                 clickY = motionEvent.getY();
                 heroAircraft.setLocation(clickX, clickY);
 
-                if ( clickX<0 || clickX> OfflineGameActivity.screenWidth || clickY<0 || clickY> OfflineGameActivity.screenHeight){
+                if ( clickX<0 || clickX> OnlineGameActivity.screenWidth || clickY<0 || clickY> OnlineGameActivity.screenHeight){
                     // 防止超出边界
                     return false;
                 }
@@ -474,7 +482,7 @@ public abstract class OnlineBaseGame extends SurfaceView implements SurfaceHolde
             bgmPlayer.shutUp();
             soundPlayer.playGameOver();
             // FIXME 发送 message，后面会在 GameActivity 转页面用到
-            OfflineGameActivity.mHandler.sendEmptyMessage(1);
+            OnlineGameActivity.mHandler.sendEmptyMessage(1);
 
             Log.i(TAG, "heroAircraft is not Valid");
         }
@@ -491,7 +499,7 @@ public abstract class OnlineBaseGame extends SurfaceView implements SurfaceHolde
             canvas.drawBitmap(backGround, 0, this.backGroundTop - backGround.getHeight(), mPaint);
             canvas.drawBitmap(backGround, 0, this.backGroundTop, mPaint);
             backGroundTop += 1;
-            if (backGroundTop == OfflineGameActivity.screenHeight)
+            if (backGroundTop == OnlineGameActivity.screenHeight)
                 this.backGroundTop = 0;
 
             //先绘制子弹，后绘制飞机
@@ -559,8 +567,8 @@ public abstract class OnlineBaseGame extends SurfaceView implements SurfaceHolde
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        OfflineGameActivity.screenWidth = i1;
-        OfflineGameActivity.screenHeight = i2;
+        OnlineGameActivity.screenWidth = i1;
+        OnlineGameActivity.screenHeight = i2;
     }
 
     @Override

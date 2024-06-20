@@ -24,8 +24,6 @@ public class OnlineActivity extends AppCompatActivity {
 
     private static final String TAG = "OnlineActivity";
     boolean soundSwitch;
-    private ActivityManager activityManager;
-
     class GameModeListener implements View.OnClickListener {
 
         int gameType;
@@ -48,8 +46,10 @@ public class OnlineActivity extends AppCompatActivity {
 
             executor.execute(() -> {
                 try {
-                    // 创立连接
+                    // create conn
                     WebSocketService.getInstance().connect("ws://10.249.12.73:9999");
+
+                    // TODO 发送消息，选择的是什么模式
 
                     // 阻塞线程，等待 gameBegin 返回
                     GameBegin gameBegin = WebSocketService.getInstance().recvBegin();
@@ -57,7 +57,7 @@ public class OnlineActivity extends AppCompatActivity {
                     handler.post(() -> {
                         alertDialog.dismiss();
                         /* ---------- 切换 ---------- */
-                        Intent intent = new Intent(OnlineActivity.this, OfflineGameActivity.class);
+                        Intent intent = new Intent(OnlineActivity.this, OnlineGameActivity.class);
                         intent.putExtra("gameType", gameType);
                         intent.putExtra("soundOn", getIntent().getBooleanExtra("soundSwitch", false));
                         startActivity(intent);
@@ -79,9 +79,8 @@ public class OnlineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityManager = ActivityManager.getActivityManager();
-        activityManager.addActivity(OnlineActivity.this);
-        setContentView(R.layout.activity_offline);
+        ActivityManager.getActivityManager().addActivity(OnlineActivity.this);
+        setContentView(R.layout.activity_online);
         Button easyModeButton = (Button) findViewById(R.id.easyModeButton);
         Button normalModeButton = (Button) findViewById(R.id.normalModeButton);
         Button hardModeButton = (Button) findViewById(R.id.hardModeButton);
@@ -93,7 +92,6 @@ public class OnlineActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        activityManager.finishActivity();
-//        super.onBackPressed();
+        ActivityManager.getActivityManager().finishActivity();
     }
 }

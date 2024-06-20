@@ -126,6 +126,10 @@ public class WebSocketService {
         sendMessage(gameEnd);
     }
 
+    public void sendScore(int score) throws Exception {
+        sendMessage(new Score(score));
+    }
+
     public void sendScore(Score score) throws Exception {
         sendMessage(score);
     }
@@ -136,6 +140,7 @@ public class WebSocketService {
         }
 
         String jsonMessage = objectMapper.writeValueAsString(message);
+        Log.i(TAG, jsonMessage);
         webSocketClient.send(jsonMessage);
     }
 
