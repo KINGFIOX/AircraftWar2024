@@ -76,7 +76,13 @@ public class MainActivity extends AppCompatActivity {
                             // await 结束后，结束
                             runOnUiThread(() -> {
                                 alertDialog.dismiss();
-                                Toast.makeText(MainActivity.this, "Connected to server and game started", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Connected to server and game started",
+                                        Toast.LENGTH_SHORT).show();
+
+                                /* ---------- 开始游戏 ---------- */
+                                Intent intent = new Intent(MainActivity.this, OnlineGameActivity.class);
+                                intent.putExtra("soundSwitch", soundOn.isChecked());
+                                startActivity(intent);
                             });
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -86,8 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
     }

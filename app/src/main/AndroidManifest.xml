@@ -22,6 +22,9 @@
             android:name=".activity.GameActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.OnlineGameActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.RankListActivity"
             android:exported="false"/>
 

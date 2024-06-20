@@ -237,6 +237,10 @@ public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, R
 
             }
 
+            // TODO 每次刷新，发送 score
+
+            // TODO 如果没有 收进来的 score
+
             // 子弹移动
             bulletsMoveAction();
             // 飞机移动

@@ -27,6 +27,15 @@ public class GameWebSocketClient extends WebSocketClient {
         return instance;
     }
 
+    public static void resetInstance() throws URISyntaxException {
+        synchronized (lock) {
+            if (instance != null) {
+                instance = null;
+            }
+        }
+    }
+
+
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         // 连接打开时的处理逻辑
