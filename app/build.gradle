@@ -31,7 +31,7 @@ android {
 dependencies {
     /* ---------- websocket ---------- */
     implementation 'org.java-websocket:Java-WebSocket:1.5.2'
-    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
 
     /* ---------- websocket ---------- */
     implementation 'androidx.appcompat:appcompat:1.4.1'
