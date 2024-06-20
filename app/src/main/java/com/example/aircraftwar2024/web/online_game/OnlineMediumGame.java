@@ -1,10 +1,11 @@
-package com.example.aircraftwar2024.game;
+package com.example.aircraftwar2024.web.online_game;
 
 import android.content.Context;
+
 import com.example.aircraftwar2024.ImageManager;
 
-public class MediumGame extends BaseGame{
-    public MediumGame(Context context) {
+public class OnlineMediumGame extends OnlineBaseGame {
+    public OnlineMediumGame(Context context) {
         super(context);
         this.backGround = ImageManager.BACKGROUND2_IMAGE;
         this.enemyMaxNumber = 3;

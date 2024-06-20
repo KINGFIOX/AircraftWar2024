@@ -7,6 +7,9 @@ import android.util.Log;
 
 import java.util.Stack;
 
+/**
+ * @brief 饿汉模式
+ */
 public class ActivityManager {
     private static Stack<Activity> activityStack = new Stack<Activity>();
 
@@ -84,7 +87,7 @@ public class ActivityManager {
      */
     public void back2Title() {
         finishActivity(RankListActivity.class);
-        finishActivity(GameActivity.class);
+        finishActivity(OfflineGameActivity.class);
         finishActivity(OfflineActivity.class);
     }
 

@@ -1,7 +1,6 @@
-package com.example.aircraftwar2024.game;
+package com.example.aircraftwar2024.web.online_game;
 
 import android.content.Context;
-import android.os.Handler;
 
 import com.example.aircraftwar2024.ImageManager;
 import com.example.aircraftwar2024.aircraft.AbstractEnemyAircraft;
@@ -10,9 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class EasyGame extends BaseGame{
+public class OnlineEasyGame extends OnlineBaseGame {
 
-    public EasyGame(Context context) {
+    public OnlineEasyGame(Context context) {
         super(context);
         this.backGround = ImageManager.BACKGROUND1_IMAGE;
         this.enemyMaxNumber = 2;
@@ -24,7 +23,7 @@ public class EasyGame extends BaseGame{
 
     /**
      * 简单模式没有 boss
-     * @return
+     *
      */
     @Override
     protected List<AbstractEnemyAircraft> produceBoss() {

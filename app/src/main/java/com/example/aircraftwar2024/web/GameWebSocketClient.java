@@ -110,6 +110,16 @@ public class GameWebSocketClient extends WebSocketClient {
         ex.printStackTrace();
     }
 
+    public void awaitBegin() throws InterruptedException {
+        beginLatch.await(); // 阻塞直到收到 "begin" 消息
+    }
+
+    public void awaitEnd() throws InterruptedException {
+        endLatch.await(); // 阻塞直到收到 "begin" 消息
+    }
+
+    /* ---------- 发送标志 ---------- */
+
     public void sendScore(int score) {
         try {
             // 创建 Score 对象并设置属性
@@ -141,14 +151,5 @@ public class GameWebSocketClient extends WebSocketClient {
             e.printStackTrace();
         }
     }
-
-    public void awaitBegin() throws InterruptedException {
-        beginLatch.await(); // 阻塞直到收到 "begin" 消息
-    }
-
-    public void awaitEnd() throws InterruptedException {
-        endLatch.await(); // 阻塞直到收到 "begin" 消息
-    }
-
 
 }

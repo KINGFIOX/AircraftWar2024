@@ -1,7 +1,7 @@
 package com.example.aircraftwar2024.aircraft;
 
 import com.example.aircraftwar2024.ImageManager;
-import com.example.aircraftwar2024.activity.GameActivity;
+import com.example.aircraftwar2024.activity.OfflineGameActivity;
 import com.example.aircraftwar2024.shoot.DirectShoot;
 
 /**
@@ -27,7 +27,7 @@ public class HeroAircraft extends AbstractAircraft {
      * 单例模式：私有化构造方法
      */
     private HeroAircraft() {
-        super(GameActivity.screenWidth / 2, GameActivity.screenHeight - ImageManager.HERO_IMAGE.getHeight(),
+        super(OfflineGameActivity.screenWidth / 2, OfflineGameActivity.screenHeight - ImageManager.HERO_IMAGE.getHeight(),
                 0, 0, 1000);
         this.shootNum = 1;
         this.power = 30;

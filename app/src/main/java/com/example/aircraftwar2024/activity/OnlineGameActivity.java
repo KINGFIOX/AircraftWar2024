@@ -1,6 +1,5 @@
 package com.example.aircraftwar2024.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,45 +9,30 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.aircraftwar2024.game.BaseGame;
-import com.example.aircraftwar2024.game.EasyGame;
-import com.example.aircraftwar2024.game.HardGame;
-import com.example.aircraftwar2024.game.MediumGame;
-import com.example.aircraftwar2024.game.OnlineGame;
-import com.example.aircraftwar2024.web.GameWebSocketClient;
-import com.example.aircraftwar2024.web.Score;
+import com.example.aircraftwar2024.web.online_game.OnlineBaseGame;
+import com.example.aircraftwar2024.web.online_game.OnlineEasyGame;
+import com.example.aircraftwar2024.web.online_game.OnlineHardGame;
+import com.example.aircraftwar2024.web.online_game.OnlineMediumGame;
 
-import java.net.URISyntaxException;
 
 public class OnlineGameActivity extends AppCompatActivity {
     private static final String TAG = "OnlineGameActivity";
 
     private int gameType = 0;
-    public static int screenWidth, screenHeight;
 
     public static Handler mHandler;
-    // private int score;
 
     public static boolean soundOn;
 
-    boolean backPressedOnce = false;
-
-    private ActivityManager activityManager;
-
-    // public MyMediaPlayer myMediaPlayer = new
-    // MyMediaPlayer(GameActivity.this,true);
-
-    /* ---------- 获取屏幕 higth 和 width ---------- */
+    /* ---------- 设置 width 和 height ---------- */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityManager = ActivityManager.getActivityManager();
-        activityManager.addActivity(OnlineGameActivity.this);
+        ActivityManager.getActivityManager().addActivity(OnlineGameActivity.this);
 
-        getScreenHW();  // 获取屏幕的长宽
+        getScreenHW();
 
         if (getIntent() != null) {
             gameType = getIntent().getIntExtra("gameType", 1);
@@ -56,56 +40,39 @@ public class OnlineGameActivity extends AppCompatActivity {
             Log.v("GAMEAC", String.valueOf(soundOn));
         }
 
-        /* TODO:根据用户选择的难度加载相应的游戏界面 */
+
+        /*TODO:根据用户选择的难度加载相应的游戏界面*/
         Log.v("GAME", "LOADING GAME");
 
-        // BaseGame baseGameView = getGameByModeID(gameType);
-        OnlineGame onlineGameView = new OnlineGame(OnlineGameActivity.this);
-        setContentView(onlineGameView);
+        OnlineBaseGame baseGameView = getGameByModeID(gameType);
+        //baseGameView.setSoundOn(soundOn);
+        Log.v("GAME", "HAVE LOADED GAME");
+        setContentView(baseGameView);
 
         mHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(OnlineGameActivity.this);
-                builder.setMessage("Matching, please wait...").setCancelable(false);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
 
+                // FIXME 飞机死亡，发送消息
                 if (msg.what == 1) {
+                    int score = baseGameView.getScore();
 
-                    int score = onlineGameView.getScore();
-
-                    // TODO 发送消息
-                    try {
-                        GameWebSocketClient webSocketClient = GameWebSocketClient.getInstance("ws://10.249.12.73:9999");
-                        Log.i(TAG, "before socket send");
-                        webSocketClient.sendEnd(score);
-
-                        try {
-                            webSocketClient.awaitEnd(); // 阻塞
-                            // await 结束后，结束
-                            runOnUiThread(() -> {
-                                Intent intent = new Intent(OnlineGameActivity.this, RankListActivity.class);
-//                                // 我们默认是 中等模式
-//                                intent.putExtra("gameType", 1);
-//                                intent.putExtra("score", score);
-                                startActivity(intent);  //
-                            });
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    }
+                    Intent intent = new Intent(OnlineGameActivity.this, RankListActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("gameType", gameType);
+                    intent.putExtra("score", score);
+//                    setContentView(R.layout.activity_record);
+                    startActivity(intent);
                 }
 
             }
         };
     }
 
-    /* ---------- 获取屏幕 higth 和 width ---------- */
+    /* ---------- 设置 width 和 height ---------- */
+    public static int screenWidth, screenHeight;
     public void getScreenHW() {
         // 定义DisplayMetrics 对象
         DisplayMetrics dm = new DisplayMetrics();
@@ -120,11 +87,27 @@ public class OnlineGameActivity extends AppCompatActivity {
         Log.i(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
     }
 
+    /* ---------- 设置 Game Mode ---------- */
+    public OnlineBaseGame getGameByModeID(int gameType) {
+        switch (gameType) {
+            case 0:
+                return new OnlineEasyGame(OnlineGameActivity.this);
+            case 1:
+                return new OnlineMediumGame(OnlineGameActivity.this);
+            case 2:
+                return new OnlineHardGame(OnlineGameActivity.this);
+            default:
+                return new OnlineMediumGame(OnlineGameActivity.this);
+        }
+    }
+
+
     /* ---------- 按下 back ---------- */
+    boolean backPressedOnce = false;
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {
-            activityManager.exitApp(OnlineGameActivity.this);
+            ActivityManager.getActivityManager().exitApp(OnlineGameActivity.this);
         }
         backPressedOnce = true;
         Toast.makeText(OnlineGameActivity.this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();
@@ -132,4 +115,5 @@ public class OnlineGameActivity extends AppCompatActivity {
             backPressedOnce = false;
         }, 2000);
     }
+
 }

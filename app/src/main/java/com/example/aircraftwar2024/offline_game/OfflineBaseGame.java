@@ -1,4 +1,4 @@
-package com.example.aircraftwar2024.game;
+package com.example.aircraftwar2024.offline_game;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,7 +12,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import androidx.annotation.NonNull;
 import com.example.aircraftwar2024.ImageManager;
-import com.example.aircraftwar2024.activity.GameActivity;
+import com.example.aircraftwar2024.activity.OfflineGameActivity;
 import com.example.aircraftwar2024.aircraft.AbstractAircraft;
 import com.example.aircraftwar2024.aircraft.AbstractEnemyAircraft;
 import com.example.aircraftwar2024.aircraft.BossEnemy;
@@ -44,7 +44,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 子类需实现抽象方法，实现相应逻辑
  * @author hitsz
  */
-public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Callback, Runnable{
+public abstract class OfflineBaseGame extends SurfaceView implements SurfaceHolder.Callback, Runnable{
 
     public static final String TAG = "BaseGame";
     boolean mbLoop; //控制绘画线程的标志位
@@ -148,13 +148,13 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
 
     private AbstractEnemyAircraft bossEnemy;
 
-    public BaseGame(Context context){
+    public OfflineBaseGame(Context context){
         super(context);
 
 
 
-        bgmPlayer = new BgmPlayer(context, GameActivity.soundOn);
-        soundPlayer = new SoundPlayer(context, GameActivity.soundOn);
+        bgmPlayer = new BgmPlayer(context, OfflineGameActivity.soundOn);
+        soundPlayer = new SoundPlayer(context, OfflineGameActivity.soundOn);
 
 //        mbLoop = true;
         mPaint = new Paint();  //设置画笔
@@ -340,7 +340,7 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
                 clickY = motionEvent.getY();
                 heroAircraft.setLocation(clickX, clickY);
 
-                if ( clickX<0 || clickX> GameActivity.screenWidth || clickY<0 || clickY>GameActivity.screenHeight){
+                if ( clickX<0 || clickX> OfflineGameActivity.screenWidth || clickY<0 || clickY> OfflineGameActivity.screenHeight){
                     // 防止超出边界
                     return false;
                 }
@@ -474,7 +474,7 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
             bgmPlayer.shutUp();
             soundPlayer.playGameOver();
             // FIXME 发送 message，后面会在 GameActivity 转页面用到
-            GameActivity.mHandler.sendEmptyMessage(1);
+            OfflineGameActivity.mHandler.sendEmptyMessage(1);
 
             Log.i(TAG, "heroAircraft is not Valid");
         }
@@ -491,7 +491,7 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
             canvas.drawBitmap(backGround, 0, this.backGroundTop - backGround.getHeight(), mPaint);
             canvas.drawBitmap(backGround, 0, this.backGroundTop, mPaint);
             backGroundTop += 1;
-            if (backGroundTop == GameActivity.screenHeight)
+            if (backGroundTop == OfflineGameActivity.screenHeight)
                 this.backGroundTop = 0;
 
             //先绘制子弹，后绘制飞机
@@ -559,8 +559,8 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        GameActivity.screenWidth = i1;
-        GameActivity.screenHeight = i2;
+        OfflineGameActivity.screenWidth = i1;
+        OfflineGameActivity.screenHeight = i2;
     }
 
     @Override

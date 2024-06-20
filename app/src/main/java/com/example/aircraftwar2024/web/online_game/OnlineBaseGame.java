@@ -1,4 +1,4 @@
-package com.example.aircraftwar2024.game;
+package com.example.aircraftwar2024.web.online_game;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,7 +12,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import androidx.annotation.NonNull;
 import com.example.aircraftwar2024.ImageManager;
-import com.example.aircraftwar2024.activity.GameActivity;
+import com.example.aircraftwar2024.activity.OfflineGameActivity;
 import com.example.aircraftwar2024.aircraft.AbstractAircraft;
 import com.example.aircraftwar2024.aircraft.AbstractEnemyAircraft;
 import com.example.aircraftwar2024.aircraft.BossEnemy;
@@ -44,9 +44,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 子类需实现抽象方法，实现相应逻辑
  * @author hitsz
  */
-public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, Runnable{
+public abstract class OnlineBaseGame extends SurfaceView implements SurfaceHolder.Callback, Runnable{
 
-    public static final String TAG = "OnlineGame";
+    public static final String TAG = "OnlineBaseGame";
     boolean mbLoop; //控制绘画线程的标志位
     private final SurfaceHolder mSurfaceHolder;
     private Canvas canvas;  //绘图的画布
@@ -148,17 +148,13 @@ public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, R
 
     private AbstractEnemyAircraft bossEnemy;
 
-    /**
-     * @brief OnlineGame 只会有 中等版本
-     * @param context
-     */
-    public OnlineGame(Context context){
+    public OnlineBaseGame(Context context){
         super(context);
 
 
 
-        bgmPlayer = new BgmPlayer(context, GameActivity.soundOn);
-        soundPlayer = new SoundPlayer(context, GameActivity.soundOn);
+        bgmPlayer = new BgmPlayer(context, OfflineGameActivity.soundOn);
+        soundPlayer = new SoundPlayer(context, OfflineGameActivity.soundOn);
 
 //        mbLoop = true;
         mPaint = new Paint();  //设置画笔
@@ -189,16 +185,7 @@ public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, R
         bombNotifier = BombNotifier.getInstance();
 
         heroController();
-
-        this.backGround = ImageManager.BACKGROUND2_IMAGE;
-        this.enemyMaxNumber = 3;
-        this.heroShootCycle = 9;
-        this.enemyShootCycle = 19;
-        this.eliteProb = 0.15;
-        this.bossScoreThreshold = 300;
-        this.tickCycle = 300;
     }
-
     private void heroShootAction() {
         // 英雄射击
         heroBullets.addAll(heroAircraft.shoot());
@@ -237,10 +224,6 @@ public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, R
 
             }
 
-            // TODO 每次刷新，发送 score
-
-            // TODO 如果没有 收进来的 score
-
             // 子弹移动
             bulletsMoveAction();
             // 飞机移动
@@ -274,20 +257,7 @@ public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, R
      * 每个时刻均调用一次。
      * 普通和困难模式随着时间增加会提高游戏难度
      */
-    protected void tick() {
-        this.tickCounter++;
-        if (this.tickCounter >= this.tickCycle) {
-            this.tickCounter = 0;
-            // 提高敌机产生频率（减小产生周期）
-            this.enemyCycle *= 0.99;
-            // 提高敌机血量
-            gameLevel *= 1.01;
-            System.out.format(" 提高难度！精英机概率:%.2f,敌机周期:%.2f, 敌机属性提升倍率:%.2f。\n",
-                    eliteProb, enemyCycle, gameLevel);
-
-        }
-    }
-
+    protected abstract void tick();
     private void suppliesMoveAction() {
         for (AbstractFlyingSupply flyingSupply : flyingSupplies) {
             flyingSupply.forward();
@@ -370,7 +340,7 @@ public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, R
                 clickY = motionEvent.getY();
                 heroAircraft.setLocation(clickX, clickY);
 
-                if ( clickX<0 || clickX> GameActivity.screenWidth || clickY<0 || clickY>GameActivity.screenHeight){
+                if ( clickX<0 || clickX> OfflineGameActivity.screenWidth || clickY<0 || clickY> OfflineGameActivity.screenHeight){
                     // 防止超出边界
                     return false;
                 }
@@ -498,14 +468,13 @@ public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, R
             bgmPlayer.toNormalBgm();
         }
 
-        // NOTICE 游戏结束
         if (heroAircraft.notValid()) {
             gameOverFlag = true;
             mbLoop = false;
             bgmPlayer.shutUp();
             soundPlayer.playGameOver();
             // FIXME 发送 message，后面会在 GameActivity 转页面用到
-            GameActivity.mHandler.sendEmptyMessage(1);
+            OfflineGameActivity.mHandler.sendEmptyMessage(1);
 
             Log.i(TAG, "heroAircraft is not Valid");
         }
@@ -522,7 +491,7 @@ public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, R
             canvas.drawBitmap(backGround, 0, this.backGroundTop - backGround.getHeight(), mPaint);
             canvas.drawBitmap(backGround, 0, this.backGroundTop, mPaint);
             backGroundTop += 1;
-            if (backGroundTop == GameActivity.screenHeight)
+            if (backGroundTop == OfflineGameActivity.screenHeight)
                 this.backGroundTop = 0;
 
             //先绘制子弹，后绘制飞机
@@ -590,8 +559,8 @@ public class OnlineGame extends SurfaceView implements SurfaceHolder.Callback, R
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        GameActivity.screenWidth = i1;
-        GameActivity.screenHeight = i2;
+        OfflineGameActivity.screenWidth = i1;
+        OfflineGameActivity.screenHeight = i2;
     }
 
     @Override

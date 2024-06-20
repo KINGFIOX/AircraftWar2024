@@ -1,7 +1,7 @@
 package com.example.aircraftwar2024.supply;
 
 
-import com.example.aircraftwar2024.activity.GameActivity;
+import com.example.aircraftwar2024.activity.OfflineGameActivity;
 import com.example.aircraftwar2024.basic.AbstractFlyingObject;
 
 /**
@@ -22,7 +22,7 @@ public abstract class AbstractFlyingSupply extends AbstractFlyingObject {
     public void forward() {
         super.forward();
         // 判定 y 轴向下飞行出界
-        if (locationY >= GameActivity.screenHeight ) {
+        if (locationY >= OfflineGameActivity.screenHeight ) {
             vanish();
         }
     }

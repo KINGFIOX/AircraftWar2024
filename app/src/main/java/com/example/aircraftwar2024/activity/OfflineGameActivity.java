@@ -11,34 +11,27 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.aircraftwar2024.game.BaseGame;
-import com.example.aircraftwar2024.game.EasyGame;
-import com.example.aircraftwar2024.game.HardGame;
-import com.example.aircraftwar2024.game.MediumGame;
-import com.example.aircraftwar2024.web.GameWebSocketClient;
+import com.example.aircraftwar2024.offline_game.OfflineBaseGame;
+import com.example.aircraftwar2024.offline_game.OfflineEasyGame;
+import com.example.aircraftwar2024.offline_game.OfflineHardGame;
+import com.example.aircraftwar2024.offline_game.OfflineMediumGame;
 
 
-public class GameActivity extends AppCompatActivity {
+public class OfflineGameActivity extends AppCompatActivity {
     private static final String TAG = "GameActivity";
 
     private int gameType = 0;
-    public static int screenWidth, screenHeight;
 
     public static Handler mHandler;
 //    private int score;
 
     public static boolean soundOn;
 
-    boolean backPressedOnce = false;
-
-    private ActivityManager activityManager;
-
     /* ---------- 设置 width 和 height ---------- */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityManager = ActivityManager.getActivityManager();  //
-        activityManager.addActivity(GameActivity.this);
+        ActivityManager.getActivityManager().addActivity(OfflineGameActivity.this);
 
         getScreenHW();
 
@@ -52,7 +45,7 @@ public class GameActivity extends AppCompatActivity {
         /*TODO:根据用户选择的难度加载相应的游戏界面*/
         Log.v("GAME", "LOADING GAME");
 
-        BaseGame baseGameView = getGameByModeID(gameType);
+        OfflineBaseGame baseGameView = getGameByModeID(gameType);
         //baseGameView.setSoundOn(soundOn);
         Log.v("GAME", "HAVE LOADED GAME");
         setContentView(baseGameView);
@@ -62,12 +55,11 @@ public class GameActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
 
-
                 // FIXME 飞机死亡，发送消息
                 if (msg.what == 1) {
                     int score = baseGameView.getScore();
 
-                    Intent intent = new Intent(GameActivity.this, RankListActivity.class);
+                    Intent intent = new Intent(OfflineGameActivity.this, RankListActivity.class);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("gameType", gameType);
                     intent.putExtra("score", score);
@@ -80,6 +72,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /* ---------- 设置 width 和 height ---------- */
+    public static int screenWidth, screenHeight;
     public void getScreenHW() {
         // 定义DisplayMetrics 对象
         DisplayMetrics dm = new DisplayMetrics();
@@ -95,28 +88,29 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /* ---------- 设置 Game Mode ---------- */
-    public BaseGame getGameByModeID(int gameType) {
+    public OfflineBaseGame getGameByModeID(int gameType) {
         switch (gameType) {
             case 0:
-                return new EasyGame(GameActivity.this);
+                return new OfflineEasyGame(OfflineGameActivity.this);
             case 1:
-                return new MediumGame(GameActivity.this);
+                return new OfflineMediumGame(OfflineGameActivity.this);
             case 2:
-                return new HardGame(GameActivity.this);
+                return new OfflineHardGame(OfflineGameActivity.this);
             default:
-                return new MediumGame(GameActivity.this);
+                return new OfflineMediumGame(OfflineGameActivity.this);
         }
     }
 
 
     /* ---------- 按下 back ---------- */
+    boolean backPressedOnce = false;
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {
-            activityManager.exitApp(GameActivity.this);
+            ActivityManager.getActivityManager().exitApp(OfflineGameActivity.this);
         }
         backPressedOnce = true;
-        Toast.makeText(GameActivity.this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();
+        Toast.makeText(OfflineGameActivity.this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             backPressedOnce = false;
         }, 2000);
