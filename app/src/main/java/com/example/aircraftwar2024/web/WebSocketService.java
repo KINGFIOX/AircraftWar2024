@@ -8,6 +8,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import com.example.aircraftwar2024.web.structs.GameBegin;
 import com.example.aircraftwar2024.web.structs.GameEnd;
 import com.example.aircraftwar2024.web.structs.Score;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.URI;
@@ -26,9 +27,10 @@ public class WebSocketService {
     private BlockingQueue<GameEnd> gameEndQueue = new ArrayBlockingQueue<>(1);
     private BlockingQueue<Score> scoreQueue = new ArrayBlockingQueue<>(10);
 
-    private WebSocketService() { }
+    private WebSocketService() {
+    }
 
-    public WebSocketService getInstance() {
+    static public WebSocketService getInstance() {
         return m_instance;
     }
 
@@ -46,14 +48,24 @@ public class WebSocketService {
             @Override
             public void onMessage(String message) {
                 try {
-                    if (message.contains("end")) {
-                        GameEnd gameEnd = objectMapper.readValue(message, GameEnd.class);
-                        gameEndQueue.put(gameEnd);
-                        Log.v(TAG, "Received GameEnd message: " + gameEnd.getScore());
-                    } else {
-                        Score score = objectMapper.readValue(message, Score.class);
+                    JsonNode jsonNode = objectMapper.readTree(message);
+                    if (jsonNode.has("message")) {
+                        String msgType = jsonNode.get("message").asText();
+                        if ("begin".equals(msgType)) {
+                            GameBegin gameBegin = objectMapper.treeToValue(jsonNode, GameBegin.class);
+                            gameBeginQueue.put(gameBegin);
+                            Log.d(TAG, "Received GameBegin message: " + gameBegin.getMessage());
+                        } else if ("end".equals(msgType)) {
+                            GameEnd gameEnd = objectMapper.treeToValue(jsonNode, GameEnd.class);
+                            gameEndQueue.put(gameEnd);
+                            Log.d(TAG, "Received GameEnd message: " + gameEnd.getScore());
+                        }
+                    } else if (jsonNode.has("score")) {
+                        Score score = objectMapper.treeToValue(jsonNode, Score.class);
                         scoreQueue.put(score);
-                        Log.v(TAG, "Received Score message: " + score.getMessage());
+                        Log.d(TAG, "Received Score message: " + score.getMessage());
+                    } else {
+                        Log.d(TAG, "Unknown message type received: " + message);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

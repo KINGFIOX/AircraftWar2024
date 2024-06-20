@@ -1,20 +1,19 @@
 package com.example.aircraftwar2024.web.structs;
 
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-// GameEnd class
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GameEnd {
-
-    final private String message = "end";
+    private final String message = "end";
     private int score;
 
-    public GameEnd(int score) {
+    @JsonCreator
+    public GameEnd(@JsonProperty("score") int score) {
         this.score = score;
     }
 
-    // getters and setters
     public String getMessage() {
         return message;
     }
@@ -23,4 +22,7 @@ public class GameEnd {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
 }
